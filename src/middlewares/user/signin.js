@@ -9,7 +9,7 @@ module.exports.userSignin=async (req,res)=>{
     const user=emailExisting || usernameExisting
 
     if(user){
-        if(compare(password,user.password))
+        if(await compare(password,user.password))
             res.send(user)
         else
             res.status(400).send({success:false,msg:'Wrong email or password.'});
