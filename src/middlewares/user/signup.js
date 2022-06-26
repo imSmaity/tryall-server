@@ -5,25 +5,28 @@ const { sendMail } = require("../../services/MAIL");
 const { generateOTP } = require("../../services/OTP");
 
 module.exports.userSignup=async (req,res)=>{
-    const {uid,email}=req.body
+    const {username,email}=req.body
     const isExisting=await findUserByEmail(email)
-    const isUidExisting=await findUserById(uid)
+    const isUidExisting=await findUserById(username)
     let newUser;
 
     if(isExisting){
-        res.send({success:false,msg:'This email already registered'})
+        res.status(400).send({success:false,msg:'This email already registered.'})
     }
     else if(isUidExisting){
-        res.send({success:false,msg:'This username already used'})
+        res.status(400).send({success:false,msg:'This username already used.'})
     }
     else{
         newUser=await createUser(req.body)
         if(!newUser[0]){
-            res.status(400).send({success:false,msg:'Unable to create new user'})
+            res.status(400).send({success:false,msg:newUser[1]})
+        }
+        else{
+            res.send(newUser[1])
         }
     }
     
-    res.send(newUser)
+    
 };
 
 const findUserByEmail=async(email)=>{
@@ -40,12 +43,12 @@ const findUserById=async(id)=>{
 };
 
 const createUser=async(data)=>{
-    const {uid,email,password}=data;
+    const {username,email,password}=data;
     const hashedPassword=await encrypt(password);
     const otpGenerated=generateOTP();
 
     const newUser=await User.create({
-        _id:uid,
+        _id:username,
         email,
         password:hashedPassword,
         otp:otpGenerated
