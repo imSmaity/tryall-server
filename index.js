@@ -1,1 +1,1 @@
-require('./src/routes/routes')
+require('./src/routes/routes');

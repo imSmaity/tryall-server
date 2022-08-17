@@ -1,9 +1,9 @@
-const User = require("../models/User")
+const User = require("../models/UserModel")
 
 
-module.exports.findOne=async(data)=>{
+module.exports.findOne = async (data) => {
     return await User.findOne(data)
 }
-module.exports.findByIdAndUpdate=async(id,data)=>{
-    return await User.findByIdAndUpdate(id,data)
+module.exports.findByIdAndUpdate = async (id, data) => {
+    return await User.findByIdAndUpdate(id, data)
 }

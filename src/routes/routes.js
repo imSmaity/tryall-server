@@ -1,20 +1,21 @@
-const express=require('express')
-const app=express()
-const env=require('dotenv')
-const database = require('../config/database')
-const cors=require('cors')
-const parser=require('body-parser')
-env.config()
-app.use(cors())
-app.use(parser.json())
+const express = require('express');
+const app = express();
+const env = require('dotenv');
+const database = require('../config/database');
+const cors = require('cors');
+const parser = require('body-parser');
+env.config();
+app.use(cors());
+app.use(parser.json());
 
-app.use('/auth',require('./auth.route'))
+app.use('/auth', require('./auth.route'));
+app.use('/users', require('./users.route'));
+app.use('/user/post', require('./user.route'));
 
-
-function start_server(port){
-    console.log('Server started...')
-    console.log('PORT '+port)
-    database();
+function start_server(port) {
+	console.log('Server started...');
+	console.log('PORT ' + port);
+	database();
 }
-const PORT=process.env.PORT || 8080
-app.listen(PORT,start_server(PORT))
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, start_server(PORT));
